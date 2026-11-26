@@ -321,6 +321,9 @@ pub struct TotalTokensConfig {
     pub prefix: Option<String>,
     #[serde(default = "default_true")]
     pub hide_when_zero: bool,
+    /// Append uploaded and downloaded token counts (`(↑47k ↓4.7k)`).
+    #[serde(default = "default_true")]
+    pub show_io: bool,
 }
 
 impl Default for TotalTokensConfig {
@@ -329,6 +332,7 @@ impl Default for TotalTokensConfig {
             enabled: true,
             prefix: None,
             hide_when_zero: true,
+            show_io: true,
         }
     }
 }
@@ -461,6 +465,18 @@ mod tests {
         assert!(!omitted.pr.show_unresolved);
         assert_eq!(omitted.cache_expiry.idle_seconds, 1_800);
         assert_eq!(omitted.cache_expiry.min_tokens, 50_000);
+        assert!(cfg.total_tokens.show_io);
+    }
+
+    #[test]
+    fn test_total_tokens_config_show_io() {
+        assert!(TotalTokensConfig::default().show_io);
+
+        let omitted: Config = toml::from_str("[total_tokens]\nhide_when_zero = false\n").unwrap();
+        assert!(omitted.total_tokens.show_io);
+
+        let disabled: Config = toml::from_str("[total_tokens]\nshow_io = false\n").unwrap();
+        assert!(!disabled.total_tokens.show_io);
     }
 
     #[test]

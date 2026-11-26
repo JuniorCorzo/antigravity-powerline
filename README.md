@@ -160,7 +160,7 @@ cargo install --path .
 | `quota` | `󰔛` | `⏳` | `Quota:` | `5h: 96% (4h 47m)  wk: 88%` | Remaining 5-hour and weekly quotas, color-coded by capacity, with time until the 5-hour window resets. |
 | `cache` | `󰘸` | `⚡` | `Cache:` | `97% ↓ · miss 169k` | Latest Step's prompt cache hit rate, its trend against the session average, and any recent large miss. Hidden when zero unless a miss is showing. |
 | `cache_expiry` | `󰔟` | `💤` | `Idle:` | `54m · cache likely cold` | **Long-Break Reminder**: Appears on the first Refresh after the session has been idle for `idle_seconds` (default 1800, 30 minutes), typically as you start typing the next prompt; it does not count up on screen. It measures idle time, not the cache, hence "likely". Goes away with the next Step. Hidden below `min_tokens` (default 50k) of context. With `show_tokens = true` *(opt-in)*, adds the context size (`· 92k context`). |
-| `total_tokens` | `󰓅` | `📊` | `Total:` | `52k` | Total session token throughput. |
+| `total_tokens` | `󰓅` | `📊` | `Total:` | `52k (↑47k ↓4.7k)` | Total Session token throughput, with uploaded and downloaded (`↑`/`↓`) breakdown when `show_io = true`. |
 | `artifacts` | `󰏗` | `📦` | `Artifacts:` | `2` | Number of artifacts created in the current conversation. |
 
 ---
@@ -235,6 +235,7 @@ show_tokens = false          # append the context size (`· 92k context`)
 [total_tokens]
 enabled = true
 hide_when_zero = true
+show_io = true               # append uploaded/downloaded breakdown (`(↑47k ↓4.7k)`)
 
 [artifacts]
 enabled = true
